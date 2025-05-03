@@ -22,6 +22,8 @@ import { LabCard } from "@/components/lab-card"
 import { EnhancedTestimonials } from "@/components/enhanced-testimonials"
 import { getFeaturedLabs } from "@/lib/labs"
 import type { Lab } from "@/types/lab"
+import IconWithText from '@/components/IconWithText';
+
 
 export default function Home() {
   const heroRef = useRef<HTMLDivElement>(null)
@@ -123,12 +125,13 @@ export default function Home() {
             transition={{ delay: 0.5, duration: 0.8 }}
             className="max-w-4xl mx-auto text-center"
           >
+           
             <ScrollTextReveal
               className="text-[clamp(3rem,15vw,15rem)] font-light tracking-tight leading-none text-white"
               startColor="#ffffff"
               endColor="rgba(255, 255, 255, 0.3)"
             >
-              VIRTUAL LABS
+             VIRTUAL LABS
             </ScrollTextReveal>
 
             <RevealText className="max-w-[700px] mx-auto text-xl text-white/70 mt-8" delay={0.4}>
@@ -691,8 +694,8 @@ export default function Home() {
 
             <div className="relative h-[400px] rounded-lg overflow-hidden">
               <ScrollVideo
-                src="/videos/lab-demo.mp4"
-                poster="/lab-demo-poster.jpg"
+                src="/lab-demo.mp4"
+                poster="/lab-demo-poster.jpeg"
                 className="rounded-lg"
                 threshold={[0.3, 0.8]}
               />

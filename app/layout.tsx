@@ -21,7 +21,7 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: "Virtual Labs Platform",
+  title: "অন্বেষণ | Virtual Labs",
   description: "Interactive educational platform with virtual labs for Physics, Chemistry, and Mathematics",
   generator: "Code Cuisine",
   applicationName: "Virtual Labs Platform",
@@ -51,9 +51,9 @@ export const metadata: Metadata = {
     "science education",
   ],
   icons: {
-    icon: "./favicon.ico",
-    shortcut: "./favicon.ico",
-    apple: "./favicon.ico",
+    icon: "/chemistry.png",
+    shortcut: "/chemistry.png",
+    apple: "/chemistry.png",
   },
 }
 
