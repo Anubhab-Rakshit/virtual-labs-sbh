@@ -3,81 +3,83 @@ import type { Lab } from "@/types/lab"
 // Mock database of labs
 const labsData: Lab[] = [
   {
-    id: "1",
-    slug: "physics-pendulum",
-    title: "Simple Pendulum Experiment",
-    description:
-      "Explore the physics of a simple pendulum and understand the relationship between length, gravity, and period of oscillation.",
-    category: "physics",
-    difficulty: "Beginner",
-    duration: "30 minutes",
-    thumbnail: "/pendulum-motion.png",
-    learningObjectives: [
-      "Understand the relationship between pendulum length and period",
-      "Learn how to calculate gravitational acceleration using a pendulum",
-      "Explore the concept of simple harmonic motion",
-      "Analyze experimental data and calculate error margins",
-    ],
-    prerequisites: "Basic understanding of trigonometry and Newton's laws of motion",
-    instructions: [
-      {
-        title: "Set up the pendulum",
-        description:
-          "Adjust the length of the pendulum using the slider. You can set it between 0.1m and 2.0m. The bob mass can also be adjusted, though it doesn't affect the period in ideal conditions.",
-      },
-      {
-        title: "Start the oscillation",
-        description:
-          "Pull the pendulum to the side (small angles only for simple harmonic motion) and release it by clicking the 'Release' button. Observe the motion carefully.",
-      },
-      {
-        title: "Measure the period",
-        description:
-          "Use the built-in stopwatch to measure the time it takes for the pendulum to complete 10 full oscillations. Divide by 10 to get the period of one oscillation.",
-      },
-      {
-        title: "Calculate gravitational acceleration",
-        description:
-          "Using the formula T = 2π√(L/g), calculate the value of g (gravitational acceleration) based on your measurements of period (T) and length (L).",
-      },
-      {
-        title: "Analyze error sources",
-        description:
-          "Consider what factors might introduce errors in your measurements and calculations. How could the experiment be improved?",
-      },
-    ],
-    resources: [
-      {
-        title: "Simple Pendulum Theory",
-        url: "https://en.wikipedia.org/wiki/Pendulum",
-      },
-      {
-        title: "Video Tutorial: Measuring Gravity with a Pendulum",
-        url: "https://www.youtube.com/watch?v=example",
-      },
-      {
-        title: "Interactive Pendulum Simulator",
-        url: "https://phet.colorado.edu/sims/html/pendulum-lab/latest/pendulum-lab_en.html",
-      },
-    ],
-    relatedLabs: [
-      {
-        slug: "physics-wave-interference",
-        title: "Wave Interference Patterns",
-        thumbnail: "/water-wave-interference.png",
-        category: "physics",
-      },
-      {
-        slug: "physics-double-pendulum",
-        title: "Chaotic Double Pendulum",
-        thumbnail: "/chaotic-double-pendulum.png",
-        category: "physics",
-      },
-    ],
-  },
+      id: "1",
+      slug: "electric-generator",
+      link: "https://physics-lab-generator.vercel.app/",
+      title: "Electromagnetic Induction: Electric Generator",
+      description:
+        "Investigate how mechanical energy is converted into electrical energy using electromagnetic induction. Explore how changing magnetic flux induces current in a coil.",
+      category: "physics",
+      difficulty: "Intermediate",
+      duration: "40 minutes",
+      thumbnail: "/generator.png",
+      learningObjectives: [
+        "Understand the principle of electromagnetic induction",
+        "Explore the relationship between magnetic flux and induced current",
+        "Analyze how coil turns, magnet speed, and orientation affect current",
+        "Apply Faraday's Law and Lenz's Law to predict induced voltage",
+      ],
+      prerequisites: "Basic understanding of magnetism, electric current, and Faraday's Law",
+      instructions: [
+        {
+          title: "Set up the generator",
+          description:
+            "Attach a copper coil near a rotating magnet. You can adjust the number of coil turns (e.g., 100–1000) and the rotation speed of the magnet.",
+        },
+        {
+          title: "Rotate the magnet",
+          description:
+            "Start rotating the magnet manually or with a motor. Ensure consistent rotation to observe steady results. Note how faster rotations generate higher currents.",
+        },
+        {
+          title: "Observe the bulb",
+          description:
+            "Connect a small LED bulb to the coil circuit. Observe how the bulb brightness changes with magnet speed and number of coil turns.",
+        },
+        {
+          title: "Measure induced voltage",
+          description:
+            "Use a virtual voltmeter to measure the voltage across the coil. Record how voltage varies with magnetic flux changes over time.",
+        },
+        {
+          title: "Apply electromagnetic laws",
+          description:
+            "Use Faraday’s Law (ε = -N dΦ/dt) to calculate the expected voltage. Compare with your measured values and consider possible discrepancies.",
+        },
+      ],
+      resources: [
+        {
+          title: "Faraday's Law of Induction",
+          url: "https://en.wikipedia.org/wiki/Faraday%27s_law_of_induction",
+        },
+        {
+          title: "Video: How Generators Work",
+          url: "https://www.youtube.com/watch?v=example-generator",
+        },
+        {
+          title: "Interactive Generator Simulation",
+          url: "https://phet.colorado.edu/en/simulation/faradays-law",
+        },
+      ],
+      relatedLabs: [
+        {
+          slug: "physics-magnetic-fields",
+          title: "Mapping Magnetic Fields",
+          thumbnail: "/magnetic-field-lines.jpeg",
+          category: "physics",
+        },
+        {
+          slug: "physics-ac-dc-current",
+          title: "AC vs DC Electricity",
+          thumbnail: "/ac-dc-current.png",
+          category: "physics",
+        },
+      ],
+    },
   {
     id: "2",
     slug: "chemistry-titration",
+    link: "https://ph-scale-lab.vercel.app/",
     title: "Acid-Base Titration",
     description:
       "Perform a virtual acid-base titration experiment to determine the concentration of an unknown acid or base solution.",
@@ -150,80 +152,157 @@ const labsData: Lab[] = [
   },
   {
     id: "3",
-    slug: "math-fractals",
-    title: "Fractal Explorer",
+    slug: "math-curve-fitting",
+    link: "https://curve-fitting-lab.vercel.app/",
+    title: "Interactive Curve Fitting Lab",
     description:
-      "Explore the fascinating world of fractals, including the Mandelbrot set, Julia sets, and other mathematical patterns with infinite complexity.",
+      "Experiment with curve fitting by adjusting parameters and observing how different functions—linear, quadratic, and cubic—fit to custom datasets. Drag and drop data points for hands-on exploration.",
     category: "mathematics",
-    difficulty: "Advanced",
-    duration: "60 minutes",
-    thumbnail: "/kaleidoscopic-mandelbrot.png",
+    difficulty: "Intermediate",
+    duration: "45 minutes",
+    thumbnail: "/curve-fitting.png",
     learningObjectives: [
-      "Understand the concept of self-similarity in mathematical structures",
-      "Explore the Mandelbrot and Julia sets through interactive visualization",
-      "Learn about complex numbers and iterative functions",
-      "Discover the applications of fractals in nature, art, and computer science",
+      "Understand the principles of curve fitting using polynomial functions",
+      "Learn how parameters affect linear, quadratic, and cubic curves",
+      "Interactively manipulate data points and observe fitting results",
+      "Explore the role of error minimization in regression analysis",
     ],
-    prerequisites: "Basic understanding of complex numbers and iterative functions",
+    prerequisites: "Familiarity with functions, graphs, and basic algebra",
     instructions: [
       {
-        title: "Explore the Mandelbrot set",
+        title: "Select the type of curve",
         description:
-          "Use the interactive viewer to explore the Mandelbrot set. You can zoom in on interesting regions by clicking and dragging to create a selection box.",
+          "Choose between linear (y = ax + b), quadratic (y = ax² + bx + c), or cubic (y = ax³ + bx² + cx + d) functions to fit to your dataset.",
       },
       {
         title: "Adjust the parameters",
         description:
-          "Experiment with different color schemes and iteration counts using the control panel. Higher iteration counts provide more detail but require more processing power.",
+          "Use sliders to modify parameters a, b, c, and d. Watch how the curve updates in real time to reflect the changes.",
       },
       {
-        title: "Generate Julia sets",
+        title: "Drag and drop data points",
         description:
-          "Click on any point in the Mandelbrot set to generate the corresponding Julia set. Notice how different points produce dramatically different patterns.",
+          "Interactively drag data points on the graph to create custom datasets. The curve will refit automatically based on the new data.",
       },
       {
-        title: "Investigate other fractal types",
+        title: "Minimize fitting error",
         description:
-          "Switch between different fractal types using the dropdown menu. Try exploring the Burning Ship fractal, Tricorn, or Newton fractals.",
+          "Enable 'Auto Fit' to let the system find the best-fitting parameters by minimizing the error (e.g., using least squares method).",
       },
       {
-        title: "Save and share your discoveries",
+        title: "Compare different models",
         description:
-          "When you find an interesting region, you can save the image or share the exact coordinates with others so they can explore the same area.",
+          "Switch between different curve types and compare how well each model fits the data. Discuss underfitting and overfitting scenarios.",
       },
     ],
     resources: [
       {
-        title: "The Mathematics of Fractals",
-        url: "https://en.wikipedia.org/wiki/Fractal",
+        title: "Introduction to Curve Fitting",
+        url: "https://en.wikipedia.org/wiki/Curve_fitting",
       },
       {
-        title: "Video Tutorial: Understanding the Mandelbrot Set",
-        url: "https://www.youtube.com/watch?v=example3",
+        title: "Video: Polynomial Regression Explained",
+        url: "https://www.youtube.com/watch?v=example4",
       },
       {
-        title: "Interactive Fractal Generator",
-        url: "https://fractalfoundation.org/resources/fractivities/",
+        title: "Interactive Regression Tools",
+        url: "https://www.desmos.com/calculator",
       },
     ],
     relatedLabs: [
       {
-        slug: "math-chaos-theory",
-        title: "Introduction to Chaos Theory",
-        thumbnail: "/chaos-theory-lab.png",
+        slug: "math-least-squares",
+        title: "Least Squares Method",
+        thumbnail: "/least-square-method.png",
         category: "mathematics",
       },
       {
-        slug: "math-golden-ratio",
-        title: "The Golden Ratio in Nature",
-        thumbnail: "/golden-ratio-lab.png",
+        slug: "math-data-visualization",
+        title: "Data Visualization Techniques",
+        thumbnail: "/data-visualization.jpeg",
         category: "mathematics",
       },
     ],
-  },
+  }
+,  
+{
+  id: "4",
+  slug: "physics-pendulum",
+  link: "https://virtual-labs-sbh.vercel.app/labs/physics-pendulum",
+  title: "Simple Pendulum Experiment",
+  description:
+    "Explore the physics of a simple pendulum and understand the relationship between length, gravity, and period of oscillation.",
+  category: "physics",
+  difficulty: "Beginner",
+  duration: "30 minutes",
+  thumbnail: "/pendulum-motion.png",
+  learningObjectives: [
+    "Understand the relationship between pendulum length and period",
+    "Learn how to calculate gravitational acceleration using a pendulum",
+    "Explore the concept of simple harmonic motion",
+    "Analyze experimental data and calculate error margins",
+  ],
+  prerequisites: "Basic understanding of trigonometry and Newton's laws of motion",
+  instructions: [
+    {
+      title: "Set up the pendulum",
+      description:
+        "Adjust the length of the pendulum using the slider. You can set it between 0.1m and 2.0m. The bob mass can also be adjusted, though it doesn't affect the period in ideal conditions.",
+    },
+    {
+      title: "Start the oscillation",
+      description:
+        "Pull the pendulum to the side (small angles only for simple harmonic motion) and release it by clicking the 'Release' button. Observe the motion carefully.",
+    },
+    {
+      title: "Measure the period",
+      description:
+        "Use the built-in stopwatch to measure the time it takes for the pendulum to complete 10 full oscillations. Divide by 10 to get the period of one oscillation.",
+    },
+    {
+      title: "Calculate gravitational acceleration",
+      description:
+        "Using the formula T = 2π√(L/g), calculate the value of g (gravitational acceleration) based on your measurements of period (T) and length (L).",
+    },
+    {
+      title: "Analyze error sources",
+      description:
+        "Consider what factors might introduce errors in your measurements and calculations. How could the experiment be improved?",
+    },
+  ],
+  resources: [
+    {
+      title: "Simple Pendulum Theory",
+      url: "https://en.wikipedia.org/wiki/Pendulum",
+    },
+    {
+      title: "Video Tutorial: Measuring Gravity with a Pendulum",
+      url: "https://www.youtube.com/watch?v=example",
+    },
+    {
+      title: "Interactive Pendulum Simulator",
+      url: "https://phet.colorado.edu/sims/html/pendulum-lab/latest/pendulum-lab_en.html",
+    },
+  ],
+  relatedLabs: [
+    {
+      slug: "physics-wave-interference",
+      title: "Wave Interference Patterns",
+      thumbnail: "/water-wave-interference.png",
+      category: "physics",
+    },
+    {
+      slug: "physics-double-pendulum",
+      title: "Chaotic Double Pendulum",
+      thumbnail: "/chaotic-double-pendulum.png",
+      category: "physics",
+    },
+  ],
+},
   {
-    id: "4",
+    id: "5",
     slug: "computer-neural-networks",
+    link: "https://virtual-labs-sbh.vercel.app/labs/computer-neural-networks",
     title: "Neural Network Visualization",
     description:
       "Explore how neural networks learn patterns and make predictions through an interactive visualization of network architecture and training.",
@@ -295,8 +374,9 @@ const labsData: Lab[] = [
     ],
   },
   {
-    id: "5",
+    id: "6",
     slug: "biology-cell-explorer",
+    link: "https://virtual-labs-sbh.vercel.app/labs/biology-cell-explorer",
     title: "Interactive Cell Explorer",
     description:
       "Journey inside a human cell to explore its structures, functions, and the complex processes that sustain life at the cellular level.",
@@ -368,8 +448,9 @@ const labsData: Lab[] = [
     ],
   },
   {
-    id: "6",
+    id: "7",
     slug: "physics-wave-interference",
+    link: "https://virtual-labs-sbh.vercel.app/labs/computer-neural-networks/physics-wave-interference",
     title: "Wave Interference Patterns",
     description:
       "Explore the fascinating patterns created when waves interact, and understand the principles of constructive and destructive interference.",
