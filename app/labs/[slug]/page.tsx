@@ -22,6 +22,7 @@ import type { Lab } from "@/types/lab"
 export default function LabPage() {
   const params = useParams()
   const slug = params?.slug as string
+  const link=params?.link as string
   const [lab, setLab] = useState<Lab | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [activeTab, setActiveTab] = useState("overview")
@@ -347,7 +348,7 @@ export default function LabPage() {
               <div className="lg:sticky lg:top-24 space-y-8">
                 <Card className="border-white/10 bg-white/5 backdrop-blur-md overflow-hidden">
                   <CardContent className="p-6">
-                    <Link href={`/labs/${slug}/launch`} className="block w-full mb-6" data-cursor-text="Launch">
+                    <Link href={`${link}`} className="block w-full mb-6" data-cursor-text="Launch">
                       <GlowingButton className="w-full py-6 text-base">
                         <span className="flex items-center justify-center">
                           <Play className="h-5 w-5 mr-2" />

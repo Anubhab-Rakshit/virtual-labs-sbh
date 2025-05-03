@@ -16,14 +16,14 @@ import { signIn } from "next-auth/react"
 import { z } from "zod"
 
 const loginSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
+  username: z.string().min(3, { message: "Username must be at least 3 characters" }),
   password: z.string().min(6, { message: "Password must be at least 6 characters" }),
 })
 
 const signupSchema = z
   .object({
     name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-    email: z.string().email({ message: "Please enter a valid email address" }),
+    username: z.string().min(3, { message: "Username must be at least 3 characters" }),
     password: z.string().min(6, { message: "Password must be at least 6 characters" }),
     confirmPassword: z.string(),
   })
@@ -39,13 +39,13 @@ export default function AuthPage() {
   const [signupErrors, setSignupErrors] = useState<Record<string, string>>({})
 
   const [loginData, setLoginData] = useState({
-    email: "",
+    username: "",
     password: "",
   })
 
   const [signupData, setSignupData] = useState({
     name: "",
-    email: "",
+    username: "",
     password: "",
     confirmPassword: "",
   })
@@ -81,23 +81,26 @@ export default function AuthPage() {
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
-
+  
     try {
-      // Validate form data
       loginSchema.parse(loginData)
-
-      // Simulate login (replace with actual authentication)
-      const result = await signIn("credentials", {
-        redirect: false,
-        email: loginData.email,
-        password: loginData.password,
-        callbackUrl: "/dashboard",
+  
+      const res = await fetch("https://15eb-2401-4900-7084-3f05-4c2d-447c-ba96-7f06.ngrok-free.app/api/token/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(loginData),
       })
-
-      if (result?.error) {
-        setLoginErrors({ form: "Invalid email or password" })
+  
+      const data = await res.json()
+  
+      if (!res.ok) {
+        setLoginErrors({ form: data.detail || "Invalid credentials" })
       } else {
-        router.push("/dashboard")
+        // Save tokens to localStorage (or cookie)
+        localStorage.setItem("accessToken", data.access)
+        localStorage.setItem("refreshToken", data.refresh)
+  
+        router.push("/student-dashboard")
       }
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -115,6 +118,7 @@ export default function AuthPage() {
       setIsLoading(false)
     }
   }
+  
 
   const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -127,7 +131,7 @@ export default function AuthPage() {
       // Simulate signup (replace with actual registration)
       // For demo purposes, we'll just redirect to dashboard
       setTimeout(() => {
-        router.push("/dashboard")
+        router.push("/student-dashboard")
       }, 1500)
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -149,7 +153,7 @@ export default function AuthPage() {
   const handleGoogleSignIn = async () => {
     setIsLoading(true)
     try {
-      await signIn("google", { callbackUrl: "/dashboard" })
+      await signIn("google", { callbackUrl: "/student-dashboard" })
     } catch (error) {
       console.error("Google sign in error:", error)
     } finally {
@@ -195,17 +199,17 @@ export default function AuthPage() {
                 <TabsContent value="login">
                   <form onSubmit={handleLoginSubmit} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
+                      <Label htmlFor="username">Username</Label>
                       <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="name@example.com"
-                        value={loginData.email}
+                        id="username"
+                        name="username"
+                        type="text"
+                        placeholder="your_username"
+                        value={loginData.username}
                         onChange={handleLoginChange}
-                        className={loginErrors.email ? "border-destructive" : ""}
+                        className={loginErrors.username ? "border-destructive" : ""}
                       />
-                      {loginErrors.email && <p className="text-sm text-destructive">{loginErrors.email}</p>}
+                      {loginErrors.username && <p className="text-sm text-destructive">{loginErrors.username}</p>}
                     </div>
 
                     <div className="space-y-2">
@@ -250,17 +254,17 @@ export default function AuthPage() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label htmlFor="signup-email">Email</Label>
+                      <Label htmlFor="signup-username">Username</Label>
                       <Input
-                        id="signup-email"
-                        name="email"
-                        type="email"
-                        placeholder="name@example.com"
-                        value={signupData.email}
+                        id="signup-username"
+                        name="username"
+                        type="text"
+                        placeholder="your_username"
+                        value={signupData.username}
                         onChange={handleSignupChange}
-                        className={signupErrors.email ? "border-destructive" : ""}
+                        className={signupErrors.username ? "border-destructive" : ""}
                       />
-                      {signupErrors.email && <p className="text-sm text-destructive">{signupErrors.email}</p>}
+                      {signupErrors.username && <p className="text-sm text-destructive">{signupErrors.username}</p>}
                     </div>
 
                     <div className="space-y-2">
