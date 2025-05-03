@@ -12,6 +12,7 @@ import { GlowingButton } from "@/components/glowing-button"
 import { LabCard } from "@/components/lab-card"
 import { ParticleWave } from "@/components/particle-wave"
 import type { Lab } from "@/types/lab"
+import React from "react"
 
 export default function LabsPage() {
   const [labs, setLabs] = useState<Lab[]>([])
@@ -122,6 +123,9 @@ export default function LabsPage() {
           </motion.p>
         </motion.div>
       </div>
+
+      {/* Add this new section after the header section and before the "Search and filters" section */}
+     
 
       {/* Search and filters */}
       <div className="sticky top-0 z-50 bg-black/80 backdrop-blur-md py-6 border-b border-white/10">
@@ -238,6 +242,97 @@ export default function LabsPage() {
               )}
             </>
           )}
+        </div>
+      </section>
+
+      <section className="py-16 bg-gradient-to-b from-black to-gray-900">
+        <div className="container px-4 mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-12 text-white">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600">
+              Explore Labs by Subject
+            </span>
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+            {categories.map((category) => (
+              <motion.div
+                key={category.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                whileHover={{
+                  scale: 1.05,
+                  boxShadow: "0 0 25px rgba(255, 255, 255, 0.2)",
+                }}
+                className="group cursor-pointer"
+                onClick={() => (window.location.href = `/labs/${category.id}`)}
+              >
+                <div className="relative overflow-hidden rounded-xl aspect-square flex flex-col items-center justify-center p-6 border border-white/10 bg-black/40 backdrop-blur-sm">
+                  <div
+                    className={`absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-300`}
+                    style={{
+                      background: `radial-gradient(circle at center, ${
+                        category.id === "physics"
+                          ? "#3b82f6"
+                          : category.id === "chemistry"
+                            ? "#a855f7"
+                            : category.id === "mathematics"
+                              ? "#22c55e"
+                              : category.id === "computer"
+                                ? "#06b6d4"
+                                : "#f43f5e"
+                      }, transparent 70%)`,
+                    }}
+                  />
+
+                  <div
+                    className={`w-20 h-20 rounded-full flex items-center justify-center mb-4 transition-transform duration-500 group-hover:scale-110 ${
+                      category.id === "physics"
+                        ? "bg-blue-600/20"
+                        : category.id === "chemistry"
+                          ? "bg-purple-600/20"
+                          : category.id === "mathematics"
+                            ? "bg-green-600/20"
+                            : category.id === "computer"
+                              ? "bg-cyan-600/20"
+                              : "bg-rose-600/20"
+                    }`}
+                  >
+                    {React.cloneElement(category.icon, { className: "h-10 w-10" })}
+                  </div>
+
+                  <h3 className="text-xl font-semibold text-white mb-2">{category.name}</h3>
+
+                  <p className="text-white/60 text-center text-sm">
+                    {category.id === "physics"
+                      ? "Explore motion, energy & waves"
+                      : category.id === "chemistry"
+                        ? "Discover molecules & reactions"
+                        : category.id === "mathematics"
+                          ? "Visualize abstract concepts"
+                          : category.id === "computer"
+                            ? "Code & simulate algorithms"
+                            : "Study cells & biological systems"}
+                  </p>
+
+                  <div className="absolute bottom-4 right-4">
+                    <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-white/20 transition-colors duration-300">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
     </main>
