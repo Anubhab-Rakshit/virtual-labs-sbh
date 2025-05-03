@@ -6,8 +6,8 @@ import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useSession, signOut } from "next-auth/react"
 import { cn } from "@/lib/utils"
+import IconWithText from '@/components/IconWithText';
 import { ChevronDown } from "lucide-react"
-
 export default function Navbar() {
   const pathname = usePathname()
   const { data: session } = useSession()
@@ -110,31 +110,25 @@ export default function Navbar() {
         ref={navRef}
         className={cn(
           "fixed top-0 left-0 w-full z-50 transition-all duration-500",
-          isScrolled 
-            ? "py-3 bg-black/80 backdrop-blur-md border-b border-white/10" 
-            : "py-6 bg-transparent"
+          isScrolled ? "py-3 bg-black/80 backdrop-blur-md border-b border-white/10" : "py-6 bg-transparent",
         )}
       >
         <div className="container px-4 mx-auto flex items-center justify-between">
-          <Link
+        <Link
             href="/"
             className="text-white text-2xl font-extralight tracking-wider"
             onMouseEnter={() => setHovered("logo")}
             onMouseLeave={() => setHovered(null)}
             data-cursor-text="Home"
           >
-            <motion.span
-              animate={{
-                opacity: hovered === "logo" ? 1 : 0.9,
-                y: hovered === "logo" ? -2 : 0,
-              }}
-              transition={{ duration: 0.2 }}
-            >
-              VIRTUAL LABS
-            </motion.span>
+            <section className="">
+                      <IconWithText text="অন্বেষণ" />
+            </section>
           </Link>
+          
+          
 
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -176,9 +170,8 @@ export default function Navbar() {
                 />
               </Link>
             ))}
-
-            {/* Language Dropdown */}
-            <div className="relative" ref={languageRef}>
+           {/* Language Dropdown */}
+           <div className="relative" ref={languageRef}>
               <button
                 className="flex items-center gap-1 text-white/70 hover:text-white transition-colors text-sm uppercase tracking-wider"
                 onClick={() => setIsLanguageOpen(!isLanguageOpen)}
@@ -243,7 +236,6 @@ export default function Navbar() {
                 )}
               </AnimatePresence>
             </div>
-
             {session ? (
               <motion.button
                 onClick={() => signOut()}
@@ -358,8 +350,8 @@ export default function Navbar() {
                 </motion.div>
               ))}
 
-              {/* Mobile Language Selector */}
-              <motion.div
+                  {/* Mobile Language Selector */}
+                  <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: navItems.length * 0.1 + 0.1 }}
@@ -387,7 +379,7 @@ export default function Navbar() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: (navItems.length + 1) * 0.1 + 0.1 }}
+                transition={{ delay: navItems.length * 0.1 + 0.1 }}
               >
                 {session ? (
                   <button
@@ -410,15 +402,6 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Background for Home page */}
-      {pathname === "/" && (
-        <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-blue-950/30" />
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.8)_80%)]" />
-          <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:50px_50px]" />
-        </div>
-      )}
     </>
   )
 }
