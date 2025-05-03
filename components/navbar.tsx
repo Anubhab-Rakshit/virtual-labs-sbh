@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useSession, signOut } from "next-auth/react"
 import { cn } from "@/lib/utils"
-
+import IconWithText from '@/components/IconWithText';
 export default function Navbar() {
   const pathname = usePathname()
   const { data: session } = useSession()
@@ -46,23 +46,19 @@ export default function Navbar() {
         )}
       >
         <div className="container px-4 mx-auto flex items-center justify-between">
-          <Link
+        <Link
             href="/"
             className="text-white text-2xl font-extralight tracking-wider"
             onMouseEnter={() => setHovered("logo")}
             onMouseLeave={() => setHovered(null)}
             data-cursor-text="Home"
           >
-            <motion.span
-              animate={{
-                opacity: hovered === "logo" ? 1 : 0.9,
-                y: hovered === "logo" ? -2 : 0,
-              }}
-              transition={{ duration: 0.2 }}
-            >
-              VIRTUAL LABS
-            </motion.span>
+            <section className="">
+                      <IconWithText text="অন্বেষণ" />
+            </section>
           </Link>
+          
+          
 
           <div className="hidden md:flex items-center gap-8">
             {navItems.map((item) => (
