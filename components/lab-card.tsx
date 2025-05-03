@@ -36,7 +36,7 @@ export function LabCard({ lab, className }: LabCardProps) {
 
   return (
     <Link
-      href={`/labs/${lab.slug}`}
+      href={`${lab.link}`}
       className={className}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
