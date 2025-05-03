@@ -523,21 +523,154 @@ const labsData: Lab[] = [
   },
 ]
 
+
+
+const TRANSLATION_API = "https://15eb-2401-4900-7084-3f05-4c2d-447c-ba96-7f06.ngrok-free.app/api/translate/";
+
+async function translate(text: string, target: string): Promise<string> {
+  const response = await fetch(TRANSLATION_API, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ text, target }),
+  });
+
+  if (!response.ok) {
+    console.error(`Failed to translate "${text}" to "${target}"`);
+    return text; // fallback to original
+  }
+
+  const data = await response.json();
+  return data.translated_text || text;
+}
+
+export async function getTranslatedLabs(data: Lab[]): Promise<Lab[]> {
+  const targetLang = localStorage.getItem("selectedLanguage") || "en";
+
+  if (targetLang === "en") return labsData;
+
+  const translatedLabs: Lab[] = await Promise.all(
+    data.map(async (lab) => {
+      const translatedTitle = await translate(lab.title, targetLang);
+      const translatedDescription = await translate(lab.description, targetLang);
+      const translatedPrerequisites = await translate(lab.prerequisites, targetLang);
+
+      const translatedLearningObjectives = await Promise.all(
+        lab.learningObjectives.map((obj) => translate(obj, targetLang))
+      );
+
+      const translatedInstructions = await Promise.all(
+        lab.instructions.map(async (step) => ({
+          title: await translate(step.title, targetLang),
+          description: await translate(step.description, targetLang),
+        }))
+      );
+
+      const translatedResources = await Promise.all(
+        lab.resources.map(async (res) => ({
+          title: await translate(res.title, targetLang),
+          url: res.url,
+        }))
+      );
+
+      const translatedRelatedLabs = await Promise.all(
+        lab.relatedLabs.map(async (related) => ({
+          ...related,
+          title: await translate(related.title, targetLang),
+        }))
+      );
+
+      const data = {
+        ...lab,
+        title: translatedTitle,
+        description: translatedDescription,
+        prerequisites: translatedPrerequisites,
+        learningObjectives: translatedLearningObjectives,
+        instructions: translatedInstructions,
+        resources: translatedResources,
+        relatedLabs: translatedRelatedLabs,
+      };
+      return data;
+    })
+  );
+  return translatedLabs;
+}
+
+
+/*
+export async function getAllLabs(): Promise<Lab[]> {
+  const targetLang = localStorage.getItem("selectedLanguage") || "en";
+
+  if (targetLang === "en") return labsData;
+
+  const translatedLabs: Lab[] = await Promise.all(
+    labsData.map(async (lab) => {
+      const translatedTitle = await translate(lab.title, targetLang);
+      const translatedDescription = await translate(lab.description, targetLang);
+      const translatedPrerequisites = await translate(lab.prerequisites, targetLang);
+
+      const translatedLearningObjectives = await Promise.all(
+        lab.learningObjectives.map((obj) => translate(obj, targetLang))
+      );
+
+      const translatedInstructions = await Promise.all(
+        lab.instructions.map(async (step) => ({
+          title: await translate(step.title, targetLang),
+          description: await translate(step.description, targetLang),
+        }))
+      );
+
+      const translatedResources = await Promise.all(
+        lab.resources.map(async (res) => ({
+          title: await translate(res.title, targetLang),
+          url: res.url,
+        }))
+      );
+
+      const translatedRelatedLabs = await Promise.all(
+        lab.relatedLabs.map(async (related) => ({
+          ...related,
+          title: await translate(related.title, targetLang),
+        }))
+      );
+
+      const data = {
+        ...lab,
+        title: translatedTitle,
+        description: translatedDescription,
+        prerequisites: translatedPrerequisites,
+        learningObjectives: translatedLearningObjectives,
+        instructions: translatedInstructions,
+        resources: translatedResources,
+        relatedLabs: translatedRelatedLabs,
+      };
+      return data;
+    })
+  );
+  return translatedLabs;
+}
+*/
+
 // Get all labs
 export async function getAllLabs(): Promise<Lab[]> {
   // In a real app, this would fetch from an API or database
-  return labsData
+  return getTranslatedLabs(labsData);
 }
 
 // Get labs by category
 export async function getLabsByCategory(category: string): Promise<Lab[]> {
-  return labsData.filter((lab) => lab.category === category)
+  return getTranslatedLabs(labsData.filter((lab) => lab.category === category))
 }
 
 // Get a single lab by slug
 export async function getLabBySlug(slug: string): Promise<Lab | null> {
-  const lab = labsData.find((lab) => lab.slug === slug)
-  return lab || null
+  const lab = labsData.find((lab) => lab.slug === slug);
+  if (!lab) return null;
+
+  const [translatedLab] = await getTranslatedLabs([lab]);
+  return translatedLab;
+
 }
 
 // Search labs
