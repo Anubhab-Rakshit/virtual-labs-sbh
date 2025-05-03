@@ -6,14 +6,34 @@ import { usePathname } from "next/navigation"
 import { motion, AnimatePresence } from "framer-motion"
 import { useSession, signOut } from "next-auth/react"
 import { cn } from "@/lib/utils"
-import IconWithText from '@/components/IconWithText';
+import { ChevronDown } from "lucide-react"
+
 export default function Navbar() {
   const pathname = usePathname()
   const { data: session } = useSession()
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [hovered, setHovered] = useState<string | null>(null)
+  const [isLanguageOpen, setIsLanguageOpen] = useState(false)
+  const [selectedLanguage, setSelectedLanguage] = useState("English")
   const navRef = useRef<HTMLElement>(null)
+  const languageRef = useRef<HTMLDivElement>(null)
+
+  // Initialize language from localStorage on component mount
+  useEffect(() => {
+    // Only run in the browser, not during SSR
+    if (typeof window !== 'undefined') {
+      const savedLanguage = localStorage.getItem("selectedLanguage")
+      if (savedLanguage) {
+        setSelectedLanguage(savedLanguage)
+        
+        // Apply the saved language on initial load
+        const langCode = getLanguageCode(savedLanguage)
+        // Example: i18n.changeLanguage(langCode)
+        console.log(`Initializing with saved language: ${savedLanguage} (${langCode})`)
+      }
+    }
+  }, [])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,12 +49,60 @@ export default function Navbar() {
     setIsMenuOpen(false)
   }, [pathname])
 
+
+  // Close language dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (languageRef.current && !languageRef.current.contains(event.target as Node)) {
+        setIsLanguageOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
   const navItems = [
     { name: "Home", href: "/" },
     { name: "Labs", href: "/labs" },
     { name: "About", href: "/about" },
-    {name : "Dashboard", href: "/student-dashboard"},
+    { name: "Dashboard", href: "/student-dashboard" },
   ]
+
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Bengali", code: "bn" },
+    { name: "Hindi", code: "hi" },
+    { name: "Tamil", code: "ta"}
+  ]
+  
+  // Function to get language code from name
+  const getLanguageCode = (name: string): string => {
+    const language = languages.find(lang => lang.name === name)
+    return language ? language.code : "en"
+  }
+
+  const handleLanguageChange = (language: string) => {
+    setSelectedLanguage(language)
+    setIsLanguageOpen(false)
+    
+    
+    // Get language code
+    const langCode = getLanguageCode(language)
+
+    // Store language preference in localStorage
+    localStorage.setItem("selectedLanguage", langCode);
+    
+    // Here you would implement actual language change logic
+    // Example: i18n.changeLanguage(langCode)
+    console.log(`Language changed to: ${language} (${langCode})`)
+
+    setTimeout(() => {
+      // Reload the page to apply the new language
+      window.location.reload()
+    }, 100)
+
+  }
 
   return (
     <>
@@ -42,25 +110,31 @@ export default function Navbar() {
         ref={navRef}
         className={cn(
           "fixed top-0 left-0 w-full z-50 transition-all duration-500",
-          isScrolled ? "py-3 bg-black/80 backdrop-blur-md border-b border-white/10" : "py-6 bg-transparent",
+          isScrolled 
+            ? "py-3 bg-black/80 backdrop-blur-md border-b border-white/10" 
+            : "py-6 bg-transparent"
         )}
       >
         <div className="container px-4 mx-auto flex items-center justify-between">
-        <Link
+          <Link
             href="/"
             className="text-white text-2xl font-extralight tracking-wider"
             onMouseEnter={() => setHovered("logo")}
             onMouseLeave={() => setHovered(null)}
             data-cursor-text="Home"
           >
-            <section className="">
-                      <IconWithText text="অন্বেষণ" />
-            </section>
+            <motion.span
+              animate={{
+                opacity: hovered === "logo" ? 1 : 0.9,
+                y: hovered === "logo" ? -2 : 0,
+              }}
+              transition={{ duration: 0.2 }}
+            >
+              VIRTUAL LABS
+            </motion.span>
           </Link>
-          
-          
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             {navItems.map((item) => (
               <Link
                 key={item.href}
@@ -102,6 +176,73 @@ export default function Navbar() {
                 />
               </Link>
             ))}
+
+            {/* Language Dropdown */}
+            <div className="relative" ref={languageRef}>
+              <button
+                className="flex items-center gap-1 text-white/70 hover:text-white transition-colors text-sm uppercase tracking-wider"
+                onClick={() => setIsLanguageOpen(!isLanguageOpen)}
+                onMouseEnter={() => setHovered("language")}
+                onMouseLeave={() => setHovered(null)}
+                data-cursor-text="Language"
+              >
+                <motion.span
+                  animate={{
+                    y: hovered === "language" ? -2 : 0,
+                    opacity: hovered === "language" ? 1 : 0.7,
+                  }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {selectedLanguage}
+                </motion.span>
+                <motion.div
+                  animate={{
+                    rotateZ: isLanguageOpen ? 180 : 0,
+                    y: hovered === "language" ? -2 : 0,
+                    opacity: hovered === "language" ? 1 : 0.7,
+                  }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ChevronDown size={14} />
+                </motion.div>
+              </button>
+
+              {/* Hover underline */}
+              <motion.div
+                className="absolute -bottom-1 left-0 w-full h-[1px] bg-white"
+                initial={{ scaleX: 0, originX: "left" }}
+                animate={{ scaleX: hovered === "language" ? 1 : 0 }}
+                transition={{ duration: 0.2 }}
+              />
+
+              {/* Language dropdown menu */}
+              <AnimatePresence>
+                {isLanguageOpen && (
+                  <motion.div
+                    className="absolute top-full right-0 mt-2 bg-black/90 backdrop-blur-md border border-white/10 rounded-md overflow-hidden w-32"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {languages.map((language) => (
+                      <button
+                        key={language.code}
+                        className={cn(
+                          "block w-full text-left px-4 py-2 text-sm transition-colors",
+                          selectedLanguage === language.name 
+                            ? "text-white bg-white/10" 
+                            : "text-white/70 hover:text-white hover:bg-white/5"
+                        )}
+                        onClick={() => handleLanguageChange(language.name)}
+                      >
+                        {language.name}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
 
             {session ? (
               <motion.button
@@ -217,10 +358,36 @@ export default function Navbar() {
                 </motion.div>
               ))}
 
+              {/* Mobile Language Selector */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: navItems.length * 0.1 + 0.1 }}
+                className="flex flex-col items-center space-y-4"
+              >
+                <div className="text-white/70 text-xl uppercase tracking-wider">
+                  Language
+                </div>
+                <div className="flex space-x-4">
+                  {languages.map((language, index) => (
+                    <button
+                      key={language.code}
+                      className={cn(
+                        "text-white/70 hover:text-white transition-colors text-xl",
+                        selectedLanguage === language.name && "text-white underline"
+                      )}
+                      onClick={() => handleLanguageChange(language.name)}
+                    >
+                      {language.name}
+                    </button>
+                  ))}
+                </div>
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: (navItems.length + 1) * 0.1 + 0.1 }}
               >
                 {session ? (
                   <button
@@ -243,6 +410,15 @@ export default function Navbar() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Background for Home page */}
+      {pathname === "/" && (
+        <div className="fixed inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-black/90 to-blue-950/30" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0)_0%,rgba(0,0,0,0.8)_80%)]" />
+          <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:50px_50px]" />
+        </div>
+      )}
     </>
   )
 }
