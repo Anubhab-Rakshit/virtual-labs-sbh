@@ -9,6 +9,7 @@ import ParticlesBackground from "@/components/particles-background"
 import MagneticCursor from "@/components/magnetic-cursor"
 import SmoothScroll from "@/lib/smooth-scroll"
 import PageTransitions from "@/components/page-transitions"
+import { ChatProvider } from "@/components/chat/chat-provider"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -79,6 +80,7 @@ export default function RootLayout({
             </SmoothScroll>
           </AuthProvider>
         </ThemeProvider>
+        <ChatProvider />
       </body>
     </html>
   )
