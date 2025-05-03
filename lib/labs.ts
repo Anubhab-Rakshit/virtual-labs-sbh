@@ -44,7 +44,7 @@ const labsData: Lab[] = [
         {
           title: "Apply electromagnetic laws",
           description:
-            "Use Faraday’s Law (ε = -N dΦ/dt) to calculate the expected voltage. Compare with your measured values and consider possible discrepancies.",
+            "Use Faraday's Law (ε = -N dΦ/dt) to calculate the expected voltage. Compare with your measured values and consider possible discrepancies.",
         },
       ],
       resources: [
@@ -86,7 +86,7 @@ const labsData: Lab[] = [
     category: "chemistry",
     difficulty: "Intermediate",
     duration: "45 minutes",
-    thumbnail: "/colorful-titration-experiment.png",
+    thumbnail: "/ph-lab.jpeg",
     learningObjectives: [
       "Understand the principles of acid-base titration",
       "Learn how to use indicators to determine the endpoint",
@@ -228,14 +228,14 @@ const labsData: Lab[] = [
 {
   id: "4",
   slug: "physics-pendulum",
-  link: "https://virtual-labs-sbh.vercel.app/labs/physics-pendulum",
+  link: "https://virtual-labs-sbh.vercel.app/labs/physics/pendulum",
   title: "Simple Pendulum Experiment",
   description:
     "Explore the physics of a simple pendulum and understand the relationship between length, gravity, and period of oscillation.",
   category: "physics",
   difficulty: "Beginner",
   duration: "30 minutes",
-  thumbnail: "/pendulum-motion.png",
+  thumbnail: "/pendulum.png",
   learningObjectives: [
     "Understand the relationship between pendulum length and period",
     "Learn how to calculate gravitational acceleration using a pendulum",
